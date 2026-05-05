@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        /* Modern, mobile-first styling */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #fce4ec, #f3e5f5);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 85%;
+            max-width: 400px;
+            z-index: 10;
+        }
+
+        h1 {
+            color: #d81b60;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            background: #d81b60;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+            background: #ad1457;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Happy Birthday! 🎂</h1>
+        <p>Wishing you a day filled with happiness, laughter, and lots of cake. You deserve the best!</p>
+        <button class="btn" onclick="fireConfetti()">Celebrate! 🎉</button>
+    </div>
+
+    <!-- Confetti Library from CDN -->
+    <script src="https://jsdelivr.net"></script>
+
+    <script>
+        // Function to trigger the confetti effect
+        function fireConfetti() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#d81b60', '#f06292', '#f48fb1', '#ffffff']
+            });
+        }
+
+        // Auto-fire confetti on page load
+        window.onload = fireConfetti;
+    </script>
+</body>
+</html>
