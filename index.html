@@ -1,88 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
-    <style>
-        /* Modern, mobile-first styling */
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #fce4ec, #f3e5f5);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            text-align: center;
-        }
+  <meta charset="UTF-8">
+  <title>Happy Birthday 🎂</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 85%;
-            max-width: 400px;
-            z-index: 10;
-        }
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
-        h1 {
-            color: #d81b60;
-            margin-bottom: 10px;
-            font-size: 2rem;
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      text-align: center;
+      overflow: hidden;
+    }
 
-        p {
-            color: #555;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
+    .container {
+      padding: 20px;
+      max-width: 90%;
+    }
 
-        .btn {
-            background: #d81b60;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: transform 0.2s, background 0.2s;
-        }
+    h1 {
+      font-size: 2.5rem;
+      color: #fff;
+    }
 
-        .btn:active {
-            transform: scale(0.95);
-            background: #ad1457;
-        }
-    </style>
+    p {
+      font-size: 1.2rem;
+      color: #fff;
+      margin: 15px 0;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 25px;
+      background: #fff;
+      color: #ff6f91;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff6f91;
+      color: #fff;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="card">
-        <h1>Happy Birthday! 🎂</h1>
-        <p>Wishing you a day filled with happiness, laughter, and lots of cake. You deserve the best!</p>
-        <button class="btn" onclick="fireConfetti()">Celebrate! 🎉</button>
-    </div>
+<canvas id="confetti"></canvas>
 
-    <!-- Confetti Library from CDN -->
-    <script src="https://jsdelivr.net"></script>
+<div class="container">
+  <h1>🎉 Happy Birthday! 🎂</h1>
+  <p>Wishing you a day filled with love, joy, and lots of cake! 🥳</p>
+  <button onclick="startConfetti()">Celebrate 🎊</button>
+</div>
 
-    <script>
-        // Function to trigger the confetti effect
-        function fireConfetti() {
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#d81b60', '#f06292', '#f48fb1', '#ffffff']
-            });
-        }
+<script>
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
 
-        // Auto-fire confetti on page load
-        window.onload = fireConfetti;
-    </script>
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let confetti = [];
+
+  function randomColor() {
+    const colors = ['#ff0a54','#ff477e','#ff85a1','#fbb1bd','#f9bec7'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  function createConfetti() {
+    for (let i = 0; i < 150; i++) {
+      confetti.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 50,
+        color: randomColor(),
+        tilt: Math.random() * 10 - 10
+      });
+    }
+  }
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < confetti.length; i++) {
+      let c = confetti[i];
+      ctx.beginPath();
+      ctx.fillStyle = c.color;
+      ctx.fillRect(c.x, c.y, c.r, c.r);
+    }
+    updateConfetti();
+  }
+
+  function updateConfetti() {
+    for (let i = 0; i < confetti.length; i++) {
+      let c = confetti[i];
+      c.y += Math.cos(c.d) + 2;
+      c.x += Math.sin(c.d);
+
+      if (c.y > canvas.height) {
+        c.y = -10;
+        c.x = Math.random() * canvas.width;
+      }
+    }
+  }
+
+  function startConfetti() {
+    confetti = [];
+    createConfetti();
+    setInterval(drawConfetti, 20);
+  }
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+</script>
+
 </body>
 </html>
